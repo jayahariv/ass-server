@@ -83,7 +83,6 @@ router.get('/spaces/:spaceId/users', function(req, response, next) {
         },
       },
       function (err, result) {
-        console.log(result);
       	if (result && result.code == 200) {
           response.send(result.buffer.toString());
       	} else {
