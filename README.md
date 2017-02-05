@@ -7,4 +7,4 @@ This one is a server which supports the Ass-client.
 
 - download the code
 - go inside the folder using, 'cd ass-server'
-- run command, 'node App.js'
+- run command, 'npm start'
