@@ -6,6 +6,12 @@ const router = express.Router();
 const _401 = 'Please provide valid key & secret!';
 const _baseURL = 'http://api.assembla.com/v1'
 
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -50,6 +56,34 @@ router.get('/mentions', function(req, response, next) {
         },
       },
       function (err, result) {
+      	if (result && result.code == 200) {
+          response.send(result.buffer.toString());
+      	} else {
+          response.send(err);
+      		return;
+        }
+    });
+  }
+});
+
+router.get('/spaces/:spaceId/users', function(req, response, next) {
+  const key = req.query['key'];
+  const secret = req.query['secret'];
+  const spaceId = req.params['spaceId'];
+  if (
+    key && secret && spaceId &&
+    key.length > 0 && secret.length > 0 && spaceId.length > 0
+  ) {
+    http.get(
+      {
+      	url: _baseURL + '/spaces/' + spaceId + '/users.json',
+        headers: {
+          'X-Api-Key': key,
+          'X-Api-Secret': secret,
+        },
+      },
+      function (err, result) {
+        console.log(result);
       	if (result && result.code == 200) {
           response.send(result.buffer.toString());
       	} else {
