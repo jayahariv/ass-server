@@ -20,10 +20,14 @@ router.get('/', function(req, res, next) {
 router.get('/activity', function(req, response, next) {
   const key = req.query['key'];
   const secret = req.query['secret'];
-  if (key && secret && key.length > 0 && secret.length > 0) {
+  const page = req.query['page'];
+  if (
+    key && secret && page &&
+    key.length > 0 && secret.length > 0 && page.length > 0
+  ) {
     http.get(
       {
-      	url: _baseURL + '/activity',
+      	url: _baseURL + '/activity?per_page=100' + '&page=' + page,
         headers: {
           'X-Api-Key': key,
           'X-Api-Secret': secret,
