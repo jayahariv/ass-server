@@ -1,5 +1,6 @@
 const express = require('express');
 const http = require('http-request');
+const fs = require("fs");
 
 const router = express.Router();
 
@@ -12,9 +13,24 @@ router.use(function(req, res, next) {
   next();
 });
 
-/* GET home page. */
+
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
+});
+
+router.get('/file', function(req, response, next) {
+  const path = req.query['path'];
+  if (path && path.length > 0) {
+    fs.readFile(path, 'utf8', function(error, data) {
+      if (error) {
+        response.send(null);
+      };
+      console.log(data);
+      response.send(data);
+    });
+  } else {
+    response.send(null);
+  }
 });
 
 router.get('/activity', function(req, response, next) {
